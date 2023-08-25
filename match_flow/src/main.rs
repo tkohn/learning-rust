@@ -49,6 +49,21 @@ fn main() {
         Some(s) => println!("{s:?}"),
         None => println!("None"),
     }
+
+    let config_max = Some(3u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {}", max),
+        _ => (),
+    }
+
+    let config_max = Some(3u8);
+    if let Some(max) = config_max {
+        println!("The maximum is configured to be {}", max);
+    }
+
+    // Quote from: https://rust-book.cs.brown.edu/ch06-03-if-let.html
+    // In other words, you can think of if let as syntax sugar for a match that runs code
+    // when the value matches one pattern and then ignores all other values.
 }
 
 fn plus_one(x: Option<i32>) -> Option<i32> {
