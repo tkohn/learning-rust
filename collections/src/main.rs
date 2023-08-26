@@ -1,8 +1,47 @@
 fn main() {
     //vector_example();
-    string_examples();
+    //string_examples();
+    hash_map_examples();
 }
 
+use std::collections::HashMap;
+fn hash_map_examples() {
+    println!("########### HashMap Examples ###########");
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10); // i32 will be copied, String will be moved
+    scores.entry(String::from("Yellow")).or_insert(50);
+
+    let team_name = String::from("Blue");
+    let score = scores.get(&team_name).copied().unwrap_or(0);
+    println!("{score}");
+
+    scores.entry(String::from("Blue")).or_insert(25); // a value exists, so it will not insert 25 for Key Blue
+    for (key, value) in &scores {
+        println!("{key}: {value}");
+    }
+
+    scores.insert(String::from("Blue"), 40);
+
+    for (key, value) in &scores {
+        println!("{key}: {value}");
+    }
+
+    let field_name = String::from("Favorite color");
+    let field_value = String::from("Blue");
+
+    let mut map = HashMap::new();
+    map.insert(field_name, field_value);
+    // println!("{field_name}{field_value}"); // value borrowed here after move
+
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("{:?}", map);
+}
 fn string_examples() {
     println!("########### String Examples ###########");
     let mut s = String::new();
