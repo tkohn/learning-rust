@@ -1,7 +1,13 @@
 use std::thread;
 
 fn main() {
-    closure_examples();
+    //closure_examples();
+    let v1: Vec<i32> = vec![1, 2, 3];
+    let x = v1.iter().map(|x| x + 1); // warning: unused `Map` that must be used
+                                      //   = note: iterators are lazy and do nothing unless consumed
+                                      //   = note: `#[warn(unused_must_use)]` on by default
+    let v2: Vec<_> = x.collect();
+    assert_eq!(v2, vec![2, 3, 4]);
 }
 
 fn make_a_cloner(s_ref: &str) -> impl Fn() -> String + '_ {
