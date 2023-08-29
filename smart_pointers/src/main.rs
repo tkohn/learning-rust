@@ -58,6 +58,9 @@ fn main() {
         println!("count after creating c = {}", Rc::strong_count(&a));
     }
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+
+    let x = 5;
+    //let y = &mut x; // cannot borrow `x` as mutable, as it is not declared as mutable
 }
 
 struct CustomSmartPointer {
