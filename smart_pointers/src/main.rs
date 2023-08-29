@@ -25,7 +25,32 @@ fn main() {
     let n = AccessLogger(-1);
     let x = *n + 1;
     let n2 = n;
-    println!("{} {}", x, *n)
+    println!("{} {}", x, *n);
+
+    // CustomSmartPointer Examples
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+
+    let d = CustomSmartPointer {
+        data: String::from("Other stuff"),
+    };
+    // c.drop(); // can not be used directly, it is called implicit
+    drop(c); // std::mem::drop
+    println!("CustomSmartPointer created.");
+
+    // Variables are dropped in the reverse order of their creation,
+    // so 'd' was dropped before 'c'
+}
+
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with data '{}'", self.data);
+    }
 }
 
 fn hello(name: &str) {
