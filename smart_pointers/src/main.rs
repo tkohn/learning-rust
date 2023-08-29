@@ -1,5 +1,7 @@
 use crate::List::{Cons, Nil};
+use crate::ListRc::{ConsRc, NilRc};
 use std::ops::Deref;
+use std::rc::Rc;
 
 fn main() {
     examples();
@@ -41,6 +43,21 @@ fn main() {
 
     // Variables are dropped in the reverse order of their creation,
     // so 'd' was dropped before 'c'
+
+    let x = Cons(5, Box::new(Cons(10, Box::new(Nil))));
+    let y = Cons(3, Box::new(x));
+    // let z = Cons(4, Box::new(x)); // x -> use of moved value
+
+    println!("######## Rc Examples");
+    let a = Rc::new(ConsRc(5, Rc::new(ConsRc(10, Rc::new(NilRc)))));
+    println!("count after creating a = {}", Rc::strong_count(&a));
+    let b = ConsRc(3, Rc::clone(&a));
+    println!("count after creating b = {}", Rc::strong_count(&a));
+    {
+        let c = ConsRc(4, Rc::clone(&a));
+        println!("count after creating c = {}", Rc::strong_count(&a));
+    }
+    println!("count after c goes out of scope = {}", Rc::strong_count(&a));
 }
 
 struct CustomSmartPointer {
@@ -55,6 +72,18 @@ impl Drop for CustomSmartPointer {
 
 fn hello(name: &str) {
     println!("Hello, {}", name);
+}
+
+#[derive(Debug)]
+enum List {
+    Cons(i32, Box<List>),
+    Nil,
+}
+
+#[derive(Debug)]
+enum ListRc {
+    ConsRc(i32, Rc<ListRc>),
+    NilRc,
 }
 struct MyBox<T>(T);
 
@@ -98,10 +127,4 @@ fn examples() {
 
     assert_eq!(5, x);
     assert_eq!(5, *y);
-}
-
-#[derive(Debug)]
-enum List {
-    Cons(i32, Box<List>),
-    Nil,
 }
